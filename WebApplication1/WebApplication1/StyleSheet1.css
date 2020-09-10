@@ -1,0 +1,8 @@
+﻿body {
+    font-size: 40px;
+}
+
+input:focus
+{
+    background-color: yellow;
+}
