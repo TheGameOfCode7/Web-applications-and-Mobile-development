@@ -11,7 +11,49 @@ namespace WebApplication2
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            int logid = int.Parse(Request.QueryString["logid"]);
+            if (!Page.IsPostBack)
+            {
+                BindData(logid);
+            }
+        }
 
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            int logid = int.Parse(Request.QueryString["logid"]);
+            var db = new AdventureWorks2019Entities();
+            var item = db.DatabaseLogs.Where(x => x.DatabaseLogID == logid).FirstOrDefault();
+            try
+            {
+                item.PostTime = DateTime.Parse(txtTimeStamp.Text);
+                item.DatabaseUser = txtDatabaseUser.Text;
+                item.Object = txtObject.Text;
+                item.Event = txtEvent.Text;
+
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+            Response.Redirect("~/AdventureWorks");
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/AdventureWorks");
+        }
+
+        private void BindData(int logid)
+        {
+            var db = new AdventureWorks2019Entities();
+            var item = db.DatabaseLogs.Where(x => x.DatabaseLogID == logid).First();
+            txtTimeStamp.Text = item.PostTime.ToString();
+            txtDatabaseUser.Text = item.DatabaseUser;
+            txtObject.Text = item.Object;
+            txtEvent.Text = item.Event;
         }
     }
 }
