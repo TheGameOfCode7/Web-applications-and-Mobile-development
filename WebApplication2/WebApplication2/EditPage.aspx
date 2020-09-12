@@ -2,31 +2,29 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div>
-        <label runat="server" text="Time stamp" />
-        <asp:TextBox runat="server" ID="txtTimeStamp" />
-        <asp:RequiredFieldValidator runat="server" ID="reqTimeStamp" ControlToValidate="txtTimeStamp" />
+        <asp:label runat="server" text="Post Time" />
+        <asp:TextBox runat="server" ID="txtPostTime" ReadOnly="true"/>
     </div>
 
     <div>
-        <label runat="server" text="Database USer" />
+        <asp:label runat="server" text="Database User" />
         <asp:TextBox runat="server" ID="txtDatabaseUser" Wrap="true" Rows="10"/>
+        <asp:RequiredFieldValidator runat="server" ID="ReqDatabaseUser" ControlToValidate="txtDatabaseUser" ErrorMessage="(Required)"/>
     </div>
 
     <div>
-        <label runat="server" text="Object" />
+        <asp:label runat="server" text="Object" />
         <asp:TextBox runat="server" ID="txtObject" />
     </div>
     <div>
-        <label runat="server" text="Event" />
+        <asp:label runat="server" text="Event" />
         <asp:TextBox runat="server" ID="txtEvent" />
+        <asp:RequiredFieldValidator runat="server" ID="ReqEvent" ControlToValidate="txtEvent" ErrorMessage="(Required)"/>
     </div>
 
     <div>
         <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
+        <asp:Button ID="btnCreate" runat="server" Text="Create" OnClick="btnCreate_Click" visible="false"/>
         <asp:Button ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
     </div>
-
-
-
-
 </asp:Content>

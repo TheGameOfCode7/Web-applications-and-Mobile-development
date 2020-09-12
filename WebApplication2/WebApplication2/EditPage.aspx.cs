@@ -11,10 +11,21 @@ namespace WebApplication2
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            int logid = int.Parse(Request.QueryString["logid"]);
+            int.TryParse(Request.QueryString["logid"], out int logid);
             if (!Page.IsPostBack)
             {
-                BindData(logid);
+                if (logid > 0)
+                {
+                    BindData(logid);
+                    btnCreate.Visible = false;
+                    btnUpdate.Visible = true;
+                }
+                else
+                {
+                    txtPostTime.Text=DateTime.Now.ToString();
+                    btnCreate.Visible = true;
+                    btnUpdate.Visible = false;
+                }
             }
         }
 
@@ -25,7 +36,7 @@ namespace WebApplication2
             var item = db.DatabaseLogs.Where(x => x.DatabaseLogID == logid).FirstOrDefault();
             try
             {
-                item.PostTime = DateTime.Parse(txtTimeStamp.Text);
+                item.PostTime = DateTime.Parse(txtPostTime.Text);
                 item.DatabaseUser = txtDatabaseUser.Text;
                 item.Object = txtObject.Text;
                 item.Event = txtEvent.Text;
@@ -37,7 +48,7 @@ namespace WebApplication2
 
                 throw;
             }
-            
+
             Response.Redirect("~/AdventureWorks");
         }
 
@@ -50,10 +61,28 @@ namespace WebApplication2
         {
             var db = new AdventureWorks2019Entities();
             var item = db.DatabaseLogs.Where(x => x.DatabaseLogID == logid).First();
-            txtTimeStamp.Text = item.PostTime.ToString();
+            txtPostTime.Text = item.PostTime.ToString();
             txtDatabaseUser.Text = item.DatabaseUser;
             txtObject.Text = item.Object;
             txtEvent.Text = item.Event;
+        }
+
+        protected void btnCreate_Click(object sender, EventArgs e)
+        {
+            var db = new AdventureWorks2019Entities();
+            var item = new DatabaseLog();
+            item.PostTime = DateTime.Now;
+            item.DatabaseUser = txtDatabaseUser.Text;
+            item.Object = txtObject.Text;
+            item.Event = txtEvent.Text;
+            item.Schema = "";
+            item.TSQL = "";
+            item.XmlEvent = "";
+
+            db.DatabaseLogs.Add(item);
+            db.SaveChanges();
+
+            Response.Redirect("~/AdventureWorks");
         }
     }
 }

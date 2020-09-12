@@ -72,7 +72,7 @@
                     <asp:LinkButton ID="lnkButton" runat="server" Text="Edit" CommandName="Edit"></asp:LinkButton>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update" CommandName="Update"></asp:LinkButton>
+                    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update" CommandName="Update"/>
                     <asp:LinkButton ID="lnkCancel" runat="server" Text="Cancel" CommandName="Cancel" />
                 </EditItemTemplate>
                 <FooterTemplate>
