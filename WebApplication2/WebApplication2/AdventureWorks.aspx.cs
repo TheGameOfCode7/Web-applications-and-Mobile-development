@@ -43,19 +43,17 @@ namespace WebApplication2
             int id = int.Parse(Gv1.DataKeys[e.RowIndex].Value.ToString());
             GridViewRow row = Gv1.Rows[e.RowIndex];
 
-            TextBox textPostTime = (TextBox)row.FindControl("txtPostTime");
-            TextBox textDatabaseUser = (TextBox)row.FindControl("txtDbUser");
-            TextBox textObject = (TextBox)row.FindControl("txtObject");
-            TextBox textEvent = (TextBox)row.FindControl("txtEvent");
+            string textDatabaseUser = ((TextBox)row.FindControl("txtDbUser")).Text;
+            string textObject = ((TextBox)row.FindControl("txtObject")).Text;
+            string textEvent = ((TextBox)row.FindControl("txtEvent")).Text;
 
             Gv1.EditIndex = -1;
 
             var db = new AdventureWorks2019Entities();
             var item = db.DatabaseLogs.Where(x => x.DatabaseLogID == id).First();
-            item.PostTime = DateTime.Parse(textPostTime.Text);
-            item.DatabaseUser = textDatabaseUser.Text;
-            item.Object = textObject.Text;
-            item.Event = textEvent.Text;
+            item.DatabaseUser = textDatabaseUser;
+            item.Object = textObject;
+            item.Event = textEvent;
             
             db.SaveChanges();
             BindData();
@@ -90,14 +88,14 @@ namespace WebApplication2
                 db.DatabaseLogs.Add(item);
                 db.SaveChanges();
             }
-
+           
             BindData();
         }
 
         private void BindData()
         {
             var db = new AdventureWorks2019Entities();
-            var dblog = from log in db.DatabaseLogs orderby log.PostTime descending select log;
+            var dblog = from log in db.DatabaseLogs orderby log.DatabaseLogID descending select log;
             if (dblog != null)
             {
                 Gv1.DataSource = dblog.ToList();

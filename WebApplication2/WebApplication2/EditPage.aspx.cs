@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -31,7 +32,7 @@ namespace WebApplication2
 
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-            int logid = int.Parse(Request.QueryString["logid"]);
+            int.TryParse(Request.QueryString["logid"], out int logid);
             var db = new AdventureWorks2019Entities();
             var item = db.DatabaseLogs.Where(x => x.DatabaseLogID == logid).FirstOrDefault();
             try
@@ -43,10 +44,9 @@ namespace WebApplication2
 
                 db.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Response.Write(ex.Message);
             }
 
             Response.Redirect("~/AdventureWorks");

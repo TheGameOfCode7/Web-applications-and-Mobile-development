@@ -3,7 +3,7 @@
     <h2><%: Title %>.</h2>
     <h3>Databse logs</h3>
 
-    <asp:Label ID="Lbl1" runat="server" Text="Hello user" />
+    <asp:Label ID="Lbl1" runat="server"/>
     <br /><br />
 
     <asp:GridView ID="Gv1" runat="server" Width="100%" CssClass="table table-striped table-bordered table-hover"
@@ -24,8 +24,8 @@
                     <asp:Label ID="lblPostTime" runat="server" Text='<%#Bind("PostTime")%>'/>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="txtPostTime" runat="server" Text='<%#Bind("PostTime")%>'/>
-                     <asp:requiredfieldvalidator ID="reqPostTime" runat="server" ControlToValidate="txtPostTime" ErrorMessage="(Required)" />
+                    <asp:TextBox ID="txtPostTime" runat="server" Text='<%#Bind("PostTime")%>' ReadOnly="true"/>
+                     <asp:requiredfieldvalidator ID="reqPostTime" runat="server" ControlToValidate="txtPostTime" ErrorMessage="(Required)" ValidationGroup="UpdateValidation"/>
                 </EditItemTemplate>
             </asp:TemplateField>
 
@@ -35,11 +35,14 @@
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="txtDbUser" runat="server" Text='<%#Bind("DatabaseUser")%>'/>
-                    <asp:requiredfieldvalidator ID="reqDbUser" runat="server" ControlToValidate="txtDbUser" ErrorMessage="(Required)" />
+                    <asp:requiredfieldvalidator ID="reqDbUser" runat="server" ControlToValidate="txtDbUser" ErrorMessage="(Required)" ValidationGroup="UpdateValidation"/>
                 </EditItemTemplate>
+
                 <FooterTemplate>
                     <asp:TextBox ID="txtNewDbUser" runat="server"/>
+                    <asp:requiredfieldvalidator ID="reqNewDbUser" runat="server" ControlToValidate="txtNewDbUser" ErrorMessage="(Required)" ValidationGroup="InsertValidation"/>
                 </FooterTemplate>
+
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Object">
@@ -49,9 +52,11 @@
                 <EditItemTemplate>
                     <asp:TextBox ID="txtObject" runat="server" Text='<%#Bind("Object")%>'/>
                 </EditItemTemplate>
+
                 <FooterTemplate>
                     <asp:TextBox ID="txtNewObject" runat="server"/>
                 </FooterTemplate>
+
             </asp:TemplateField>
 
             <asp:TemplateField HeaderText="Event">
@@ -60,24 +65,29 @@
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="txtEvent" runat="server" Text='<%#Bind("Event")%>'/>
-                    <asp:requiredfieldvalidator ID="reqEvent" runat="server" ControlToValidate="txtEvent" ErrorMessage="(Required)" />
+                    <asp:requiredfieldvalidator ID="reqEvent" runat="server" ControlToValidate="txtEvent" ErrorMessage="(Required)" ValidationGroup="UpdateValidation"/>
                 </EditItemTemplate>
+
                 <FooterTemplate>
                     <asp:TextBox ID="txtNewEvent" runat="server"/>
+                    <asp:requiredfieldvalidator ID="reqNewEvent" runat="server" ControlToValidate="txtNewEvent" ErrorMessage="(Required)" ValidationGroup="InsertValidation"/>
                 </FooterTemplate>
+
             </asp:TemplateField>
-          
+
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:LinkButton ID="lnkButton" runat="server" Text="Edit" CommandName="Edit"></asp:LinkButton>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update" CommandName="Update"/>
-                    <asp:LinkButton ID="lnkCancel" runat="server" Text="Cancel" CommandName="Cancel" />
+                    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update" CommandName="Update" ValidationGroup="UpdateValidation"/>
+                    <asp:LinkButton ID="lnkCancel" runat="server" Text="Cancel" CommandName="Cancel" CausesValidation="false"/>
                 </EditItemTemplate>
+
                 <FooterTemplate>
-                    <asp:LinkButton ID="lnkInsert" runat="server" Text="Insert" CommandName="Insert" CausesValidation="false"/>
+                    <asp:LinkButton ID="lnkInsert" runat="server" Text="Insert" CommandName="Insert" CausesValidation="true"  ValidationGroup="InsertValidation"/>
                 </FooterTemplate>
+
             </asp:TemplateField>
             
             <asp:CommandField ShowDeleteButton="True"/>

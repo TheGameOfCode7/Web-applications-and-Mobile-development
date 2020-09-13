@@ -25,7 +25,6 @@ namespace WebApplication2
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Person> People { get; set; }
         public virtual DbSet<DatabaseLog> DatabaseLogs { get; set; }
     }
 }
