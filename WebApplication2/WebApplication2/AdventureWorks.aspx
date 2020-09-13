@@ -85,7 +85,7 @@
                 </EditItemTemplate>
 
                 <FooterTemplate>
-                    <asp:LinkButton ID="lnkInsert" runat="server" Text="Insert" CommandName="Insert" CausesValidation="true"  ValidationGroup="InsertValidation"/>
+                    <asp:LinkButton ID="lnkInsert" runat="server" Text="Insert" CommandName="Insert"  ValidationGroup="InsertValidation"/>
                 </FooterTemplate>
 
             </asp:TemplateField>
