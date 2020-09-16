@@ -87,9 +87,8 @@ namespace WebApplication2
 
                 db.DatabaseLogs.Add(item);
                 db.SaveChanges();
+                BindData();
             }
-           
-            BindData();
         }
 
         private void BindData()
