@@ -1,0 +1,52 @@
+﻿@page "/DbLogEditor/{id:int}"
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using BlazorApp1.Models;
+
+<h3>dbLogEditor</h3>
+<p>You visited @ID.</p>
+
+@inject IDatabaseLogData _db;
+@inject NavigationManager _nav
+
+<EditForm Model="@dbViewLog" OnValidSubmit="@UpdateDbLog">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="DatabaseUser" @bind-Value="dbViewLog.DatabaseUser" />
+    <InputText id="Event" @bind-Value="dbViewLog.Event" />
+    <InputText id="Schema" @bind-Value="dbViewLog.Schema" />
+
+    <button type="submit" class="btn btn-primary">Update</button>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+    private DatabaseLogModel dbLog;
+    private DisplayDatabaseLogModel dbViewLog = new DisplayDatabaseLogModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        dbLog = await _db.GetSpecific(ID);
+        dbViewLog = new DisplayDatabaseLogModel()
+        {
+            DatabaseLogID = dbLog.DatabaseLogID,
+            DatabaseUser = dbLog.DatabaseUser,
+            Event = dbLog.Event,
+            Schema = dbLog.Schema,
+        };
+
+    }
+
+    private async Task UpdateDbLog()
+    {
+        dbLog = await _db.GetSpecific(ID);
+        dbLog.DatabaseUser = dbViewLog.DatabaseUser;
+        dbLog.Event = dbViewLog.Event;
+        dbLog.Schema = dbViewLog.Schema;
+        await _db.SaveData(dbLog);
+        _nav.NavigateTo("/dbLog");
+    }
+}

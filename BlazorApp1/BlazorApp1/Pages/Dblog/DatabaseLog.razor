@@ -1,0 +1,92 @@
+﻿@page "/dblog"
+@using DataAccessLibrary;
+@using DataAccessLibrary.Models;
+@using BlazorApp1.Models;
+
+@inject IDatabaseLogData _db;
+
+<h1>DatabaseLog Page</h1>
+
+
+<h2>Insert new</h2>
+<EditForm Model="@newDblog" OnValidSubmit="@InsertDbLog">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="DatabaseUser" @bind-Value="newDblog.DatabaseUser" />
+    <InputText id="Event" @bind-Value="newDblog.Event" />
+    <InputText id="Schema" @bind-Value="newDblog.Schema" />
+    <InputText id="PostTime" @bind-Value="newDblog.PostTime" />
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</EditForm>
+
+
+<h2>Database log list</h2>
+@if (dbLog is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>DatabaseUser</th>
+                <th>Event</th>
+                <th>Schema</th>
+                <th>PostTime</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dbRow in dbLog)
+            {
+                <tr>
+                    <td>@dbRow.DatabaseUser</td>
+                    <td>@dbRow.Event</td>
+                    <td>@dbRow.Schema</td>
+                    <td>@dbRow.PostTime</td>
+                    <td>
+                        @if (dbRow.DatabaseLogID > 0)
+                        {
+                            <a class="btn btn-dark" href="DbLogEditor/@dbRow.DatabaseLogID">Edit</a>
+                        }
+
+                        <a class="btn btn-danger" @onclick="() => DeleteArticle(dbRow.DatabaseLogID)">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<DatabaseLogModel> dbLog;
+    private DisplayDatabaseLogModel newDblog = new DisplayDatabaseLogModel();
+    protected override async Task OnInitializedAsync()
+    {
+        dbLog = await _db.GetData();
+    }
+
+    private async Task InsertDbLog()
+    {
+        var dbModel = new DatabaseLogModel()
+        {
+            DatabaseUser = newDblog.DatabaseUser,
+            Event = newDblog.Event,
+            Schema = newDblog.Schema,
+            PostTime = DateTime.Parse(newDblog.PostTime)
+        };
+
+        await _db.InsertDatabaseLog(dbModel);
+        dbLog.Insert(0, dbModel);
+
+        newDblog = new DisplayDatabaseLogModel();
+    }
+
+    private async Task DeleteArticle(int logId)
+    {
+        await _db.DeleteDatabaseLog(logId);
+        dbLog = await _db.GetData();
+    }
+}

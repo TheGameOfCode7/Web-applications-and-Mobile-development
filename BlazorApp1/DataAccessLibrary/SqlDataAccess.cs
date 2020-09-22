@@ -28,7 +28,7 @@ namespace DataAccessLibrary
                 return data.ToList();
             }
         }
-
+         
         public async Task SaveData<T>(string sql, T parameters)
         {
             string connectionString = _config.GetConnectionString(ConnectionStringName);
@@ -38,5 +38,14 @@ namespace DataAccessLibrary
             }
         }
 
+        public async Task<T> LoadSpecific<T, U>(string sql, U parameters)
+        {
+            string connectionString = _config.GetConnectionString(ConnectionStringName);
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                var data = await connection.QueryAsync<T>(sql, parameters);
+                return data.FirstOrDefault();
+            }
+        }
     }
 }
